@@ -2,35 +2,33 @@
 
 namespace App\Http\Controllers;
 
+use App\Country;
+use App\District;
+use App\Division;
+use App\Upazila;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 
 class TestController extends Controller
 {
-    public function abc(){
-        return 'abc method';
+    public function country()
+    {
+        $countries = Country::all();
+        return view('index', compact('countries'));
     }
 
-    public function display(){
-        return 'Display method';
+    public function divisions($id){
+        $divisions = Division::where('country_id', $id)->get();
+        return response()->json($divisions);
     }
 
-    public function userMethod(){
-        return Redirect::route('user.test');
+    public function districts($id){
+        $districts = District::where('division_id', $id)->get();
+        return response()->json($districts);
     }
 
-    public function testname(){
-        echo "Test Name";
-    }
-
-    public function test($value){
-//        return view('test')->with('value', $value);
-//        return view('test', array('value' => $value));
-//        return view('test', ['value' => $value]);
-//        return view('test', compact('value'));
-//        return view('test')->withValue($value);
-        $arr = [2, 4, 45, "kamal", "jamal"];
-        $name = "Mahmudul Hassan";
-        return view('test')->with(['value'=> $value, 'arr' => $arr, 'name' => $name]);
+    public function upazilas($id){
+        $upazilas = Upazila::where('district_id', $id)->get();
+        return response()->json($upazilas);
     }
 }
